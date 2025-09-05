@@ -6,7 +6,7 @@ import swaggerUi from "swagger-ui-express"
 import { Settings } from "./settings"
 import { error_handler } from "./utils/errors"
 import PrismaSingleInstance from "./db"
-import path from "path"
+import path, { parse } from "path"
 import { Users } from "generated/prisma"
 import cors, {CorsOptions} from "cors"
 import { generate_docs } from "./swagger-options"
@@ -41,7 +41,7 @@ const corsOptions : CorsOptions = {
 app.use(cors(corsOptions))
 
 app.use(express.json())
-app.use(express.urlencoded())
+app.use(express.urlencoded({extended : true}))
 
 app.use((req : Request , res : Response , next : NextFunction) : void => {
     const startTime = Date.now()
