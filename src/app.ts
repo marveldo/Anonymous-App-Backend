@@ -63,7 +63,7 @@ const swaggerspec = swaggerJsdoc(swaggerOptions)
 
 app.use('', express.static(path.join(__dirname, 'public/')))
 
-const swaggerDistPath = path.dirname(require.resolve('swagger-ui-dist'));
+const swaggerDistPath = path.join(process.cwd(), 'node_modules', 'swagger-ui-dist');
 
 app.use('/docs/',
   express.static(swaggerDistPath, { index: false }), 
