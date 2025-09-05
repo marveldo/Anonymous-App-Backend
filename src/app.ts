@@ -88,6 +88,11 @@ app.use('/docs/',
   })(req, res, next);
 })
 
+app.get('docs.json', (req : Request , res : Response) : void => {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(swaggerspec);
+})
+
 
 app.use('/{*any}', (req : Request , res : Response) : void =>{
     res.status(404).json({
