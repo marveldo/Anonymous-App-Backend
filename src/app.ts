@@ -9,8 +9,8 @@ import PrismaSingleInstance from "./db"
 import path from "path"
 import { Users } from "generated/prisma"
 import cors, {CorsOptions} from "cors"
-
-
+import { generate_docs } from "./swagger-options"
+import swaggerdocs from "./swagger.json"
 
 const app : Application = express()
 const port = Settings.port
@@ -82,13 +82,9 @@ app.use('/docs/',
     ],
   };
   
-  return swaggerUi.setup(dynamicSpec , {
+  return swaggerUi.setup(swaggerdocs , {
     swaggerOptions : {
        persistAuthorization : true,    
-       customCss:
-        '.swagger-ui .opblock .opblock-summary-path-description-wrapper { align-items: center; display: flex; flex-wrap: wrap; gap: 0 10px; padding: 0 10px; width: 100%; }',
-      customCssUrl: CSS_URL,
-       
     }
   })(req, res, next);
 })
