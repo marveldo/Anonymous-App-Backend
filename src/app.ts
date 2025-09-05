@@ -1,7 +1,5 @@
 import express, {Request , Response , Application, NextFunction} from "express"
 import { mainrouter } from "./routes"
-import { swaggerOptions } from "./swagger-options"
-import  swaggerJsdoc from "swagger-jsdoc"
 import swaggerUi from "swagger-ui-express"
 import { Settings } from "./settings"
 import { error_handler } from "./utils/errors"
@@ -24,6 +22,29 @@ declare global {
   }
 }
 
+const swaggerDistPath = path.join(
+  __dirname, // Use a path relative to your project root
+  'node_modules',
+  'swagger-ui-dist'
+);
+
+app.use('/docs/',
+  express.static(swaggerDistPath, { index: false }),
+  swaggerUi.serve, 
+  (req : Request , res : Response , next : NextFunction) => {
+ const protocol = req.protocol
+ const host = req.get('host')
+
+  
+  return swaggerUi.setup(swaggerdocs , {
+    swaggerOptions : {
+       customCssUrl : 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.18.3/swagger-ui.css',
+       persistAuthorization : true,    
+    }
+  })(req, res, next);
+})
+
+
 
 
 const corsOptions : CorsOptions = {
@@ -37,6 +58,9 @@ const corsOptions : CorsOptions = {
   credentials : true,
   optionsSuccessStatus : 200
 }
+
+
+
 
 app.use(cors(corsOptions))
 
@@ -58,39 +82,12 @@ app.use((req : Request , res : Response , next : NextFunction) : void => {
 
 app.use('/',mainrouter)
 
-const swaggerspec = swaggerJsdoc(swaggerOptions)
 
 
 app.use('', express.static(path.join(__dirname, 'public/')))
 
 
 
-app.use('/docs/',
-  express.static(
-        path.join(__dirname, 'node_modules', 'swagger-ui-dist')
-   ),
-  swaggerUi.serve, 
-  (req : Request , res : Response , next : NextFunction) => {
- const protocol = req.protocol
- const host = req.get('host')
- const baseUrl = `${protocol}://${host}`
- const dynamicSpec = {
-    ...swaggerspec,
-    servers: [
-      {
-        url: baseUrl,
-        description: 'Current server',
-      },
-    ],
-  };
-  
-  return swaggerUi.setup(swaggerdocs , {
-    swaggerOptions : {
-       customCssUrl : 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.18.3/swagger-ui.css',
-       persistAuthorization : true,    
-    }
-  })(req, res, next);
-})
 
 
 app.use('/{*any}', (req : Request , res : Response) : void =>{
