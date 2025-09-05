@@ -18,6 +18,8 @@ export const swaggerOptions : Options = {
   },
 
   apis : [   './src/**/*.js',           
-    './src/**/*.ts'
+    './src/**/*.ts',
+    './dist/**/*.js',
+    './dist/**/*.ts'
 ]
 };
