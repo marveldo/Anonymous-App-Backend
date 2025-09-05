@@ -29,16 +29,14 @@ const swaggerDistPath = path.join(
 );
 
 app.use('/docs/',
-  express.static(swaggerDistPath, { index: false }),
+  express.static(swaggerDistPath),
   swaggerUi.serve, 
   (req : Request , res : Response , next : NextFunction) => {
- const protocol = req.protocol
- const host = req.get('host')
+ 
 
   
   return swaggerUi.setup(swaggerdocs , {
     swaggerOptions : {
-       customCssUrl : 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.18.3/swagger-ui.css',
        persistAuthorization : true,    
     }
   })(req, res, next);
