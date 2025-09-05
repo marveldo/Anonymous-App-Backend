@@ -63,10 +63,9 @@ const swaggerspec = swaggerJsdoc(swaggerOptions)
 
 app.use('', express.static(path.join(__dirname, 'public/')))
 
-const swaggerDistPath = path.join(process.cwd(), 'node_modules', 'swagger-ui-dist');
+
 
 app.use('/docs/',
-  express.static(swaggerDistPath, { index: false }), 
   swaggerUi.serve, 
   (req : Request , res : Response , next : NextFunction) => {
  const protocol = req.protocol
