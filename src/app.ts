@@ -63,6 +63,7 @@ const swaggerspec = swaggerJsdoc(swaggerOptions)
 
 app.use('', express.static(path.join(__dirname, 'public/')))
 
+const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css"
 
 
 app.use('/docs/',
@@ -83,14 +84,13 @@ app.use('/docs/',
   
   return swaggerUi.setup(dynamicSpec , {
     swaggerOptions : {
-       persistAuthorization : true
+       persistAuthorization : true,    
+       customCss:
+        '.swagger-ui .opblock .opblock-summary-path-description-wrapper { align-items: center; display: flex; flex-wrap: wrap; gap: 0 10px; padding: 0 10px; width: 100%; }',
+      customCssUrl: CSS_URL,
+       
     }
   })(req, res, next);
-})
-
-app.get('docs.json', (req : Request , res : Response) : void => {
-    res.setHeader('Content-Type', 'application/json');
-    res.send(swaggerspec);
 })
 
 
