@@ -32,13 +32,19 @@ app.use('/docs/',
   express.static(swaggerDistPath),
   swaggerUi.serve, 
   (req : Request , res : Response , next : NextFunction) => {
- 
+   
+  const options = {
+  customCssUrl: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui.min.css',
+  customJs: [
+    'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-bundle.js',
+    'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-standalone-preset.js'
+  ],
+    persistAuthorization : true,    
+};
 
   
   return swaggerUi.setup(swaggerdocs , {
-    swaggerOptions : {
-       persistAuthorization : true,    
-    }
+    swaggerOptions : options
   })(req, res, next);
 })
 
