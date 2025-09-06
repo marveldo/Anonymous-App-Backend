@@ -21,3 +21,4 @@ export const swaggerOptions : Options = {
     path.join(__dirname, '**', '*.ts')
 ]
 };
+

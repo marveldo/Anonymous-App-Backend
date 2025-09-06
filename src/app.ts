@@ -25,7 +25,6 @@ declare global {
 }
 
 
-
 const corsOptions : CorsOptions = {
   origin : [
     'http://localhost:3000',
