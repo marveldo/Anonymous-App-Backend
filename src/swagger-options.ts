@@ -1,4 +1,5 @@
 import { Options } from "swagger-jsdoc";
+import path from "path";
 export const swaggerOptions : Options = {
   definition: {
     openapi: '3.0.0',
@@ -16,7 +17,7 @@ export const swaggerOptions : Options = {
         },
       }
     },
-  apis : [   './src/**/*.js',           
-    './src/**/*.ts'
+  apis : [      path.join(__dirname, '**', '*.js'),
+    path.join(__dirname, '**', '*.ts')
 ]
 };
