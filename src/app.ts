@@ -58,7 +58,7 @@ app.use((req : Request , res : Response , next : NextFunction) : void => {
 
 app.use('/',mainrouter)
 
-const swaggerspec = swaggerJsdoc(swaggerOptions)
+
 
 
 app.use('', express.static(path.join(__dirname, 'public/')))
@@ -72,6 +72,7 @@ app.use('/docs/',
  const protocol = req.protocol
  const host = req.get('host')
  const baseUrl = `${protocol}://${host}`
+ const swaggerspec = swaggerJsdoc(swaggerOptions(req));
  const dynamicSpec = {
     ...swaggerspec,
     servers: [
