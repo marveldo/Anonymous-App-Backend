@@ -9,3 +9,4 @@ db.sqlite
 /build
 /dist
 migrations
+.vercel

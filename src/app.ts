@@ -1,14 +1,16 @@
 import express, {Request , Response , Application, NextFunction} from "express"
 import { mainrouter } from "./routes"
+import { swaggerOptions } from "./swagger-options"
+import  swaggerJsdoc from "swagger-jsdoc"
 import swaggerUi from "swagger-ui-express"
 import { Settings } from "./settings"
 import { error_handler } from "./utils/errors"
 import PrismaSingleInstance from "./db"
-import path, { parse } from "path"
+import path from "path"
 import { Users } from "generated/prisma"
 import cors, {CorsOptions} from "cors"
-import { generate_docs } from "./swagger-options"
-import swaggerdocs from "./swagger.json"
+
+
 
 const app : Application = express()
 const port = Settings.port
@@ -21,28 +23,6 @@ declare global {
     }
   }
 }
-
-const swaggerDistPath = path.join(
-  __dirname, // Use a path relative to your project root
-  'node_modules',
-  'swagger-ui-dist'
-);
-
-app.use('/docs/',
-  express.static(swaggerDistPath),
-  swaggerUi.serve, 
-  (req : Request , res : Response , next : NextFunction) => {
-   
-  const options = {
-    persistAuthorization : true,    
-};
-
-  
-  return swaggerUi.setup(swaggerdocs , {
-    swaggerOptions : options
-  })(req, res, next);
-})
-
 
 
 
@@ -58,13 +38,10 @@ const corsOptions : CorsOptions = {
   optionsSuccessStatus : 200
 }
 
-
-
-
 app.use(cors(corsOptions))
 
 app.use(express.json())
-app.use(express.urlencoded({extended : true}))
+app.use(express.urlencoded())
 
 app.use((req : Request , res : Response , next : NextFunction) : void => {
     const startTime = Date.now()
@@ -81,12 +58,36 @@ app.use((req : Request , res : Response , next : NextFunction) : void => {
 
 app.use('/',mainrouter)
 
+const swaggerspec = swaggerJsdoc(swaggerOptions)
 
 
 app.use('', express.static(path.join(__dirname, 'public/')))
 
+const swaggerDistPath = path.join(process.cwd(), 'node_modules', 'swagger-ui-dist');
 
-
+app.use('/docs/',
+  express.static(swaggerDistPath, { index: false }), 
+  swaggerUi.serve, 
+  (req : Request , res : Response , next : NextFunction) => {
+ const protocol = req.protocol
+ const host = req.get('host')
+ const baseUrl = `${protocol}://${host}`
+ const dynamicSpec = {
+    ...swaggerspec,
+    servers: [
+      {
+        url: baseUrl,
+        description: 'Current server',
+      },
+    ],
+  };
+  
+  return swaggerUi.setup(dynamicSpec , {
+    swaggerOptions : {
+       persistAuthorization : true
+    }
+  })(req, res, next);
+})
 
 
 app.use('/{*any}', (req : Request , res : Response) : void =>{
