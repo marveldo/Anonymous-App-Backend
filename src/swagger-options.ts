@@ -2,6 +2,7 @@ import { Options } from "swagger-jsdoc";
 import { Request } from "express";
 import path from "path";
 export const swaggerOptions  = (req : Request) : Options =>{
+  console.log(req.protocol)
   const object : Options = {definition: {
     openapi: '3.0.0',
     info: {
@@ -9,12 +10,6 @@ export const swaggerOptions  = (req : Request) : Options =>{
       version: '1.0.0',
     },
   },
-  servers: [
-      {
-        url: `${req.protocol}://${req.get('host')}`,
-        description: 'Current server',
-      }
-    ],
   components: {
       securitySchemes: {
         bearerAuth: {

@@ -69,7 +69,7 @@ app.use('/docs/',
   express.static(swaggerDistPath, { index: false }), 
   swaggerUi.serve, 
   (req : Request , res : Response , next : NextFunction) => {
- const protocol = req.protocol
+ const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http'
  const host = req.get('host')
  const baseUrl = `${protocol}://${host}`
  const swaggerspec = swaggerJsdoc(swaggerOptions(req));
