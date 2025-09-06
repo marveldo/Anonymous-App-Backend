@@ -153,3 +153,4 @@
  *         statusCode: 404
  *         message: "user not NotFound"
  */
+export default {}

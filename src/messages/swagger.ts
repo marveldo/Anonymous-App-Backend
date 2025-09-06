@@ -192,3 +192,4 @@
  *                   type: string
  *                   example: "Something went wrong"
  */
+export default {}
