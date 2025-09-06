@@ -29,7 +29,8 @@ const corsOptions : CorsOptions = {
   origin : [
     'http://localhost:3000',
     'http://localhost:3001',
-    'http://localhost:5173'
+    'http://localhost:5173',
+    'https://anonymous-app-backend-rosy.vercel.app/'
   ],
   methods : ['GET' , 'POST' , 'PUT' , 'DELETE' , 'PATCH'],
   allowedHeaders : ['Content-Type' , 'Authorization', 'Accept'],
