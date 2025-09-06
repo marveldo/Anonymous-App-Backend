@@ -32,7 +32,7 @@ export const error_handler = (
 )=>{
    
     let status = 500
-    let message : string = "Internal Server error"
+    let message : string = `Internal Server Error ${(err as Error).message}`
     
     if (
     err instanceof NotFound ||
