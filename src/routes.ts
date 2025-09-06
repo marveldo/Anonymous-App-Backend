@@ -3,9 +3,9 @@ import { user_router } from "./users/routes";
 import { message_router } from "./messages/routes";
 import { settings_router } from "./settings/routes";
 const mainrouter : Router = Router()
-import user_swagger from "./users/swagger"
-import messages_swagger from "./messages/swagger"
-import settings_swagger from "./settings/swagger"
+import './users/swagger';
+import './messages/swagger'; 
+import './settings/swagger';
 
 
 

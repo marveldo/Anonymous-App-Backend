@@ -192,4 +192,5 @@
  *                   type: string
  *                   example: "Something went wrong"
  */
-export default {}
+export function __forceImport() {}
+export default {};

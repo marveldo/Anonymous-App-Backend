@@ -153,4 +153,5 @@
  *         statusCode: 404
  *         message: "user not NotFound"
  */
-export default {}
+export function __forceImport() {}
+export default {};
