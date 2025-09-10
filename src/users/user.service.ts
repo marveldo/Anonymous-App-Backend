@@ -28,7 +28,7 @@ export class Userservice {
            file_url = `${request.protocol}://${request.host}/Images/default.jpeg`
         }
         else {
-           file_url = await S3Service.uploadFileToS3(request.file.buffer, request.file.originalname, 'Images')
+           file_url = await S3Service.uploadFileToS3(request.file.buffer, request.file.originalname, 'Images', request.file.mimetype)
            
         }
 
@@ -55,7 +55,7 @@ export class Userservice {
         const user = await this.repo.get_by_id(id)
         if(!user) throw new BadRequest("User not found")
         if(request.file){
-           file_url = await S3Service.uploadFileToS3(request.file.buffer, request.file.originalname, 'Images')
+           file_url = await S3Service.uploadFileToS3(request.file.buffer, request.file.originalname, 'Images', request.file.mimetype)
         }
         if(value.username){
             const user_exists = await this.repo.get_by_username(value.username)

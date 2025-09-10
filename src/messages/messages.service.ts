@@ -21,7 +21,7 @@ class MessageService {
          let value_message : string | null = null
          
          if(request.file){
-            file_url = await S3Service.uploadFileToS3(request.file.buffer, request.file.originalname, 'recordings')
+            file_url = await S3Service.uploadFileToS3(request.file.buffer, request.file.originalname, 'recordings', request.file.mimetype)
          }
          if(value.message === undefined) value_message = null
          else value_message = value.message

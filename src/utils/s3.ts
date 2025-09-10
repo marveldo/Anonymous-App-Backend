@@ -1,4 +1,4 @@
-import {S3Client , PutObjectCommand} from "@aws-sdk/client-s3"
+import {S3Client , PutObjectCommand, PutObjectCommandInput} from "@aws-sdk/client-s3"
 import { Settings } from "../settings"
 import { Readable } from "stream"
 import path from "path"
@@ -26,7 +26,7 @@ export class S3Service {
         return S3Service.instance
     }
 
-    public static async uploadFileToS3(buffer: Buffer, originalName: string, folder_name: string): Promise<string> {
+    public static async uploadFileToS3(buffer: Buffer, originalName: string, folder_name: string, mime_type : string): Promise<string> {
       const s3_Bucket_name = Settings.aws_storage_bucket_name
       if(!s3_Bucket_name) throw new Error("S3 Bucket name not found")
      const extension = path.extname(originalName)
@@ -37,8 +37,9 @@ export class S3Service {
             Bucket: s3_Bucket_name,
             Key: key,
             Body: Readable.from(buffer),
-            ContentLength : buffer.length
-        };
+            ContentLength : buffer.length,
+            ContentType: mime_type
+        } as PutObjectCommandInput;
       
     try {
         await S3Service.s3_obj.send(new PutObjectCommand(params))
