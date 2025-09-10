@@ -6,7 +6,7 @@ import { BadRequest } from "../utils/errors";
 import { Users } from "../generated/prisma";
 import jwt from "jsonwebtoken";
 import { Settings } from "../settings";
-import { file } from "zod";
+import { S3Service } from "../utils/s3";
 
 interface ResponseData {
     access_token : string ,
@@ -28,8 +28,8 @@ export class Userservice {
            file_url = `${request.protocol}://${request.host}/Images/default.jpeg`
         }
         else {
-           const file_name = await saveFileToDisk(request.file.buffer, request.file.originalname, 'Images')
-           file_url = `${request.protocol}://${request.host}/Images/${file_name}`
+           file_url = await S3Service.uploadFileToS3(request.file.buffer, request.file.originalname, 'Images')
+           
         }
 
         const data = {
@@ -55,8 +55,7 @@ export class Userservice {
         const user = await this.repo.get_by_id(id)
         if(!user) throw new BadRequest("User not found")
         if(request.file){
-            const file_name = await saveFileToDisk(request.file.buffer, request.file.originalname, 'Images')
-            file_url = `${request.protocol}://${request.host}/Images/${file_name}`
+           file_url = await S3Service.uploadFileToS3(request.file.buffer, request.file.originalname, 'Images')
         }
         if(value.username){
             const user_exists = await this.repo.get_by_username(value.username)

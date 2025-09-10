@@ -6,6 +6,7 @@ import { saveFileToDisk } from "../utils/saver";
 import { message_repository } from "./repository";
 import { user_repository } from "../users/repository"
 import { NotFound } from "../utils/errors";
+import { S3Service } from "../utils/s3";
 
 class MessageService {
      
@@ -20,8 +21,7 @@ class MessageService {
          let value_message : string | null = null
          
          if(request.file){
-            const file_name = await saveFileToDisk(request.file.buffer, request.file.originalname, 'recordings')
-            file_url = `${request.protocol}://${request.host}/recordings/${file_name}`
+            file_url = await S3Service.uploadFileToS3(request.file.buffer, request.file.originalname, 'recordings')
          }
          if(value.message === undefined) value_message = null
          else value_message = value.message

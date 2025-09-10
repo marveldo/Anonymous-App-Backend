@@ -9,6 +9,7 @@ import PrismaSingleInstance from "./db"
 import path from "path"
 import { Users } from "generated/prisma"
 import cors, {CorsOptions} from "cors"
+import { S3Service } from "./utils/s3"
 
 
 
@@ -104,6 +105,7 @@ app.use(error_handler)
 
 const server = app.listen(port , () : void=> {
        PrismaSingleInstance.database_obj
+       S3Service.s3_obj
        console.log(`Server listening on port ${port}`)
         console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
 })
